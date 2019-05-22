@@ -1,6 +1,8 @@
 package com.bankrs.bosjava.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
@@ -11,25 +13,20 @@ public class TransactionPage {
     private Transaction[] data;
 
     @Data
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class Transaction {
         private long id;
         @JsonProperty("user_bank_account_id")
         private long accountId;
-        @JsonProperty("category_id")
         private long categoryId;
-        @JsonProperty("repeated_transaction_id")
         private long repeatedTransactionId;
         private long remoteId;
-        @JsonProperty("entry_date")
         private ZonedDateTime entryDate;
-        @JsonProperty("settlement_date")
         private ZonedDateTime SettlementDate;
         private Counterparty counterparty;
         private Amount amount;
-        @JsonProperty("original_amount")
         private Amount originalAmount;
         private String usage;
-        @JsonProperty("transaction_type")
         private String transactionType;
         private String gvcode;
     }
@@ -52,6 +49,7 @@ public class TransactionPage {
     }
 
     @Data
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class AccountRef {
         @JsonProperty("provider_id")
         private String providerId;

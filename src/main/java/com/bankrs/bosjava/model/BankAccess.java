@@ -1,15 +1,16 @@
 package com.bankrs.bosjava.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class BankAccess {
     private String ID;
     private String name;
     private boolean enabled;
     private boolean authPossible;
-    @JsonProperty("provider_id")
     private String providerId;
     private Account[] accounts;
     private AccessCapabilities capabilities;
@@ -18,18 +19,16 @@ public class BankAccess {
 
 
     @Data
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class Account {
         private long ID;
-        @JsonProperty("provider_id")
         private String providerId;
         private String name;
         private String type;
         private String number;
         private String balance;
         private String balanceDate;
-        @JsonProperty("available_balance")
         private String availableBalance;
-        @JsonProperty("credit_line")
         private String creditLine;
         private boolean removed;
         private String currency;

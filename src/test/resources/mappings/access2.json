@@ -1,0 +1,13 @@
+{
+  "request" : {
+    "url" : "/v1/accesses/2",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"id\":2,\"accounts\":[{\"id\":4,\"bank_access_id\":2,\"name\":\"Girokonto\",\"type\":\"\",\"number\":\"704357300\",\"balance\":\"971.20\",\"balance_date\":\"2019-04-05T14:48:14Z\",\"available_balance\":\"\",\"credit_line\":\"\",\"currency\":\"EUR\",\"iban\":\"DE54200411110704357300\",\"alias\":\"\",\"capabilities\":{\"account_statement\":[\"read\"],\"transfer\":[\"create\"]},\"bin\":\"\",\"provider_id\":\"DE-BIN-10010010\"}],\"name\":\"\",\"auth_possible\":false,\"enabled\":true,\"provider_id\":\"DE-BIN-10010010\",\"capabilities\":{\"recurring_transfer\":{\"periods\":[{\"type\":\"weekly\",\"repeat\":2},{\"type\":\"monthly\",\"repeat\":1},{\"type\":\"monthly\",\"repeat\":12}],\"minimum_lead_time_create\":1,\"maximum_lead_time_create\":12,\"minimum_lead_time_edit\":1,\"maximum_lead_time_edit\":6,\"minimum_lead_time_delete\":1,\"maximum_lead_time_delete\":2,\"last_day_of_month_enabled\":true,\"first_scheduled_date_modifiable\":true,\"time_unit_modifiable\":true,\"period_length_modifiable\":true,\"scheduled_date_modifiable\":true,\"last_schedule_date_modifiable\":true},\"scheduled_transfer\":{\"supported\":true},\"trading\":false}}",
+    "headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    }
+  }
+}

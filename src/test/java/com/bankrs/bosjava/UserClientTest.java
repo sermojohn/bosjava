@@ -1,9 +1,10 @@
 package com.bankrs.bosjava;
 
 import com.bankrs.bosjava.model.*;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNull;
+import org.junit.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,43 +12,50 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.bankrs.bosjava.ClientTest.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 
 public class UserClientTest {
 
-    private static UserClient userClient;
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(MOCK_SERVER_PORT); // No-args constructor defaults to port 8080
 
-    @BeforeClass
-    public static void init() {
+    public UserClient initUserClient() {
         UserLoginParams params =
                 UserLoginParams.builder()
-                        .username(ClientTest.testUsername)
-                        .password(ClientTest.testPassword)
+                        .username(MOCK_USER_NAME)
+                        .password(MOCK_USER_PASSWORD)
                         .build();
 
-        AppClient appClient = Client.newClient(ClientTest.staginBankrsUrl, ClientTest.userAgent)
-                .newAppClient(ClientTest.testApplicationId);
+        AppClient appClient = Client.newClient(MOCK_SERVER_URL, USER_AGENT)
+                .newAppClient(MOCK_APPLICATION_ID);
 
         UserLoginResponse response =
                 appClient.loginUser(params).block();
 
-        userClient = appClient.newUserClient(response.getToken());
+        return appClient.newUserClient(response.getToken());
     }
 
 
     @Test
     public void testAccesses() {
-        BankAccess accesses = userClient
+        BankAccess access = initUserClient()
                 .accessService()
                 .getAccess(2)
                 .block();
 
-        System.out.printf("user accesses: %s", accesses);
+        assertThat(access, IsNull.notNullValue());
+        assertThat(access.getAccounts()[0].getName(), Is.is("Girokonto"));
+        assertThat(access.getAccounts().length, Is.is(1));
     }
 
     @Test
+    @Ignore
     public void testListTransactions() {
         final long accessId = 2;
         final int limit = 10;
+        final UserClient userClient = initUserClient();
         TransactionPage firstPage = userClient.transactionService()
                 .list(
                         ListTransactionsReq.builder()
@@ -84,9 +92,10 @@ public class UserClientTest {
     }
 
     @Test
+    @Ignore
     public void testListRepeatedTransactions() {
         final long accessId = 2;
-        RepeatedTransactionPage repTrxs = userClient.repeatedTransactionsService()
+        RepeatedTransactionPage repTrxs = initUserClient().repeatedTransactionsService()
                 .list(ListTransactionsReq.builder()
                         .accessId(accessId)
                         .build())
@@ -96,9 +105,10 @@ public class UserClientTest {
     }
 
     @Test
+    @Ignore
     public void testListScheduledTransactions() {
         final long accessId = 2;
-        TransactionPage.Transaction[] schTrxs = userClient.scheduledTransactionsService()
+        TransactionPage.Transaction[] schTrxs = initUserClient().scheduledTransactionsService()
                 .list(ListScheduledTransactionsReq.builder()
                         .accessId(accessId)
                         .build())
